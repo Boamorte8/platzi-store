@@ -2,9 +2,6 @@ import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import HtmlWebPackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import CSSMinimizerPlugin from 'css-minimizer-webpack-plugin';
-import TerserPlugin from 'terser-webpack-plugin';
-import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 
 export default {
   entry: './src/index.js',
@@ -49,6 +46,12 @@ export default {
   },
   devServer: {
     historyApiFallback: true,
+    static: join(dirname(fileURLToPath(import.meta.url)), './dist'),
+    // watchFiles: ['./src/**/*', './public/**/*'],
+    liveReload: true,
+    compress: true,
+    port: 8000,
+    open: true,
   },
   plugins: [
     new HtmlWebPackPlugin({
@@ -58,10 +61,5 @@ export default {
     new MiniCssExtractPlugin({
       filename: 'assets/[name].css',
     }),
-    new CleanWebpackPlugin(),
   ],
-  optimization: {
-    minimize: true,
-    minimizer: [new CSSMinimizerPlugin(), new TerserPlugin()],
-  },
 };
