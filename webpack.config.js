@@ -14,6 +14,23 @@ export default {
   },
   resolve: {
     extensions: ['.js', '.jsx'],
+    alias: {
+      '@components': join(
+        dirname(fileURLToPath(import.meta.url)),
+        './src/components/'
+      ),
+      '@containers': join(
+        dirname(fileURLToPath(import.meta.url)),
+        './src/containers/'
+      ),
+      '@context': join(
+        dirname(fileURLToPath(import.meta.url)),
+        './src/context/'
+      ),
+      '@hooks': join(dirname(fileURLToPath(import.meta.url)), './src/hooks/'),
+      '@routes': join(dirname(fileURLToPath(import.meta.url)), './src/routes/'),
+      '@styles': join(dirname(fileURLToPath(import.meta.url)), './src/styles/'),
+    },
   },
   module: {
     rules: [
