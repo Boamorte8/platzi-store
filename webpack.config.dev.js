@@ -8,7 +8,7 @@ export default {
   entry: './src/index.js',
   output: {
     path: join(dirname(fileURLToPath(import.meta.url)), './dist'),
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
   },
   resolve: {
     extensions: ['.tsx', '.js', '.jsx'],
@@ -76,8 +76,8 @@ export default {
     historyApiFallback: true,
     static: join(dirname(fileURLToPath(import.meta.url)), './dist'),
     // watchFiles: ['./src/**/*', './public/**/*'],
-    liveReload: true,
-    hot: true,
+    // liveReload: true,
+    // hot: true,
     compress: true,
     port: 8000,
     open: true,
@@ -99,4 +99,9 @@ export default {
       },
     }),
   ],
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
 };
