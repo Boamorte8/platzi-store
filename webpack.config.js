@@ -5,6 +5,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CSSMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 
 export default {
   entry: './src/index.js',
@@ -13,7 +14,7 @@ export default {
     filename: 'bundle.js',
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.tsx', '.js', '.jsx'],
     alias: {
       '@components': join(
         dirname(fileURLToPath(import.meta.url)),
@@ -30,6 +31,7 @@ export default {
       '@hooks': join(dirname(fileURLToPath(import.meta.url)), './src/hooks/'),
       '@routes': join(dirname(fileURLToPath(import.meta.url)), './src/routes/'),
       '@styles': join(dirname(fileURLToPath(import.meta.url)), './src/styles/'),
+      '@assets': join(dirname(fileURLToPath(import.meta.url)), './src/assets/'),
     },
   },
   module: {
@@ -62,6 +64,15 @@ export default {
           'stylus-loader',
         ],
       },
+      {
+        test: /\.(png|jpg)$/,
+        type: 'asset',
+      },
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: '/node_modules/',
+      },
     ],
   },
   devServer: {
@@ -76,6 +87,14 @@ export default {
       filename: 'assets/[name].css',
     }),
     new CleanWebpackPlugin(),
+    new ImageMinimizerPlugin({
+      minimizer: {
+        implementation: ImageMinimizerPlugin.imageminMinify,
+        options: {
+          plugins: [['optipng', { optimizationLevel: 5 }]],
+        },
+      },
+    }),
   ],
   optimization: {
     minimize: true,

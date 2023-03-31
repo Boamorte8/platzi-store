@@ -1,8 +1,13 @@
 {
   "exclude": ["node_modules"],
   "compilerOptions": {
-    "esModuleInterop": true,
     "module": "NodeNext",
+    "outDir": "./dist",
+    "target": "es6",
+    "jsx": "react",
+    "noImplicitAny": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
     "baseUrl": "./",
     "paths": {
       "@components/*": ["./src/components/*"],

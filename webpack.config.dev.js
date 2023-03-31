@@ -2,6 +2,7 @@ import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import HtmlWebPackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 
 export default {
   entry: './src/index.js',
@@ -10,7 +11,7 @@ export default {
     filename: 'bundle.js',
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.tsx', '.js', '.jsx'],
     alias: {
       '@components': join(
         dirname(fileURLToPath(import.meta.url)),
@@ -27,6 +28,7 @@ export default {
       '@hooks': join(dirname(fileURLToPath(import.meta.url)), './src/hooks/'),
       '@routes': join(dirname(fileURLToPath(import.meta.url)), './src/routes/'),
       '@styles': join(dirname(fileURLToPath(import.meta.url)), './src/styles/'),
+      '@assets': join(dirname(fileURLToPath(import.meta.url)), './src/assets/'),
     },
   },
   module: {
@@ -59,6 +61,15 @@ export default {
           'stylus-loader',
         ],
       },
+      {
+        test: /\.(png|jpg)$/,
+        type: 'asset',
+      },
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: '/node_modules/',
+      },
     ],
   },
   devServer: {
@@ -66,6 +77,7 @@ export default {
     static: join(dirname(fileURLToPath(import.meta.url)), './dist'),
     // watchFiles: ['./src/**/*', './public/**/*'],
     liveReload: true,
+    hot: true,
     compress: true,
     port: 8000,
     open: true,
@@ -77,6 +89,14 @@ export default {
     }),
     new MiniCssExtractPlugin({
       filename: 'assets/[name].css',
+    }),
+    new ImageMinimizerPlugin({
+      minimizer: {
+        implementation: ImageMinimizerPlugin.imageminMinify,
+        options: {
+          plugins: [['optipng', { optimizationLevel: 5 }]],
+        },
+      },
     }),
   ],
 };
