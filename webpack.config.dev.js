@@ -5,10 +5,14 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 
 export default {
-  entry: './src/index.js',
+  entry: {
+    home: './src/index.js',
+    header: './src/Header/index.js',
+  },
   output: {
     path: join(dirname(fileURLToPath(import.meta.url)), './dist'),
     filename: '[name].bundle.js',
+    chunkFilename: '[name].bundle.js',
   },
   resolve: {
     extensions: ['.tsx', '.js', '.jsx'],
